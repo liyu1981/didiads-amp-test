@@ -1,0 +1,140 @@
+<!doctype html>
+<html amp lang="en">
+<head>
+<meta charset="utf-8">
+<script async src="https://cdn.ampproject.org/v0.js"></script>
+<script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+<title>Didiads AMP Test Page</title>
+<link rel="canonical" href="http://didi-ads.com/amp_test/index.html" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<script type="application/ld+json">
+{
+   "@context": "http://schema.org",
+   "@type": "NewsArticle",
+   "headline": "Didiads AMP Test Page (Didiads-qwer1234)",
+   "datePublished": "2017-07-26T04:40:48Z",
+}
+</script>
+<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+<style amp-custom>
+  body {
+    font-family: Helvetica, Sans-Serif;
+    background-color: white;
+    padding: 10px 18px;
+  }
+  amp-img {
+    background-color: gray;
+    border: 1px solid black;
+  }
+  .hidden {
+    border: none;
+    opacity: 0;
+  }
+</style>
+</head>
+<body>
+<h1>Welcome to Didiads AMP Test Page (Didiads-qwer1234) </h1>
+<amp-img src="https://placekitten.com/g/300/200" alt="Welcome" height="200" width="300"></amp-img>
+
+<h1>What's not working?</h1>
+
+<h2>1. Following Facebook pixel code will not work as AMP does not allow any sync <code>script</code> inside
+    <code>body</code>, even in <code>noscript</code> form.</h2>
+
+<pre><code>
+&lt;!-- Facebook Pixel Code --&gt;
+&lt;script&gt;
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1388136481514478'); // Insert your pixel ID here.
+fbq('track', 'PageView');
+&lt;/script&gt;
+&lt;noscript&gt;&lt;img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1388136481514478&ev=PageView&noscript=1"
+/&gt;&lt;/noscript&gt;
+</code></pre>
+
+<h2>2. Following static pixel will not work too, as AMP replaced <code>img</code> with <code>amp-img</code>.</h2>
+
+<pre><code>
+&lt;img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1388136481514478&ev=PageView&noscript=1"/&gt;
+</code></pre>
+
+<h1>What's working?</h1>
+
+<h2>1. Static pixel in <code>amp-img</code> form. But you can not use <code>display: none;</code> to hide it as AMP
+    will not even load it. Instead, you can make it transparent so user will not see it.</h2>
+
+<pre><code>
+&lt;style&gt;
+  .hidden {
+    border: none;
+    opacity: 0;
+  }
+&lt;/style&gt;
+&lt;amp-img class="hidden" height="1" width="1" src="https://www.facebook.com/tr?id=1388136481514478&ev=PageView"/&gt;
+</code></pre>
+<amp-img class="hidden" height="1" width="1" src="https://www.facebook.com/tr?id=1388136481514478&ev=PageView"></amp-img>
+
+<h2>2. We can use <code>amp-analytics</code> as described
+  <a href="https://blogs.adobe.com/digitalmarketing/mobile/adobe-analytics-for-the-accelerated-mobile-pages-project/">here</a>.
+  You need to load <code>amp-analytics</code> in your page, and configure corrrectly.</h2>
+
+<pre><code>
+&lt;!-- place below line in header --&gt;
+&lt;script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"&gt;&lt;/script&gt;
+&lt;!-- place below section in body --&gt;
+&lt;amp-analytics&gt;
+  &lt;script type="application/json"&gt;
+  {
+    "transport": {"xhrpost": false, "beacon": true},
+    "requests": {
+      "base": "https://www.facebook.com/tr",
+      "pageView": "${base}?id=${pixelid}&ev=PageView"
+    },
+    "vars": {
+      "pixelid": 1388136481514478
+    },
+    "triggers": {
+      "pageLoad": {
+        "on": "visible",
+        "request": "pageView"
+      }
+    }
+  }
+  &lt;/script&gt;
+&lt;/amp-analytics&gt;
+</code></pre>
+
+<amp-analytics>
+<script type="application/json">
+{
+  "transport": {"xhrpost": false, "beacon": true},
+  "requests": {
+    "base": "https://www.facebook.com/tr",
+    "pageView": "${base}?id=${pixelid}&ev=PageView"
+  },
+  "vars": {
+    "pixelid": 1388136481514478
+  },
+  "triggers": {
+    "pageLoad": {
+      "on": "visible",
+      "request": "pageView"
+    }
+  }
+}
+</script>
+</amp-analytics>
+
+With this technique you can bind events as normal javascript code. See official doc <a href="https://www.ampproject.org/docs/reference/components/amp-analytics">here</a>.
+
+<hr />
+&copy; 2017, Yu LI
+<a href="https://validator.ampproject.org/#url=http%3A%2F%2Fdidi-ads.com%2Famp_test%2Findex.html">Validate this page</a>
+
+</body>
+</html>
